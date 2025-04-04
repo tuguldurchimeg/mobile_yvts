@@ -1,4 +1,7 @@
 pluginManagement {
+    plugins {
+        id("com.google.devtools.ksp") version "2.0.0-1.0.22"
+    }
     repositories {
         google {
             content {
@@ -21,4 +24,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "mobile_yvts"
 include(":app")
- 

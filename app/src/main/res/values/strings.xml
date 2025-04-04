@@ -1,3 +1,24 @@
+
 <resources>
-    <string name="app_name">mobile_yvts</string>
+    <string name="app_name">Картны апп</string>
+    <string name="alert">Анхааруулга</string>
+    <string name="back">Буцах</string>
+    <string name="next">Дараах</string>
+    <string name="previous">Өмнөх</string>
+    <string name="delete">Устгах</string>
+    <string name="delete_confirm">Та устгахдаа итгэлтэй байна уу?</string>
+    <string name="no_item">Байхгүй</string>
+    <string name="edit_word">Засах</string>
+    <string name="settings">Тохиргоо</string>
+    <string name="add_word">Нэмэх</string>
+    <string name="mon_word">Монгол үг</string>
+    <string name="eng_word">Гадаад үг</string>
+    <string name="only_mon">Зөвхөн Монгол үг</string>
+    <string name="only_eng">Зөвхөн Англи үг</string>
+    <string name="both">Хоёуланг нь харуулах</string>
+    <string name="no">Үгүй</string>
+    <string name="yes">Тийм</string>
+    <string name="save">Хадгалах</string>
+    <string name="cancel">Цуцлах</string>
+    <string name="required">Бүх талбарыг бөглө</string>
 </resources>
