@@ -36,9 +36,6 @@ fun Settings(
             )
 
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                OutlinedButton(onClick = onBack) {
-                    Text(text = stringResource(R.string.back))
-                }
                 Button(
                     onClick = {
                         onSave(selectedMode)
@@ -46,6 +43,9 @@ fun Settings(
                     }
                 ) {
                     Text(text = stringResource(R.string.save))
+                }
+                OutlinedButton(onClick = onBack) {
+                    Text(text = stringResource(R.string.back))
                 }
             }
         }

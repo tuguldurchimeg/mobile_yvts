@@ -76,7 +76,7 @@ fun WordNavGraph(
             Settings(
                 currentMode = displayMode,
                 onSave = onDisplayModeChange,
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
             )
         }
     }

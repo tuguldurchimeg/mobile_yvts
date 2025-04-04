@@ -26,12 +26,14 @@ fun HomeScreen(
     onSettingsClick: () -> Unit
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
-
+    val (showEng, setShowEng) = remember(word?.id, displayMode) {
+        mutableStateOf(displayMode == DisplayMode.FULL || displayMode == DisplayMode.ONLY_ENGLISH)
+    }
+    val (showMon, setShowMon) = remember(word?.id, displayMode) {
+        mutableStateOf(displayMode == DisplayMode.FULL || displayMode == DisplayMode.ONLY_MONGOLIAN)
+    }
     Scaffold { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
+        Column(modifier = Modifier.fillMaxSize()) {
             HomeHeader(onSettingsClick)
             Column(
                 modifier = Modifier
@@ -40,8 +42,27 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                WordCardGroup(word = word, displayMode = displayMode, onEditClick = onEditClick)
-                NavigationButtons(onPrevious = onPrevious, onNext = onNext)
+                WordCardGroup(
+                    word = word,
+                    displayMode = displayMode,
+                    showEng = showEng,
+                    showMon = showMon,
+                    onToggleEng = { setShowEng(!showEng) },
+                    onToggleMon = { setShowMon(!showMon) },
+                    onEditClick = onEditClick
+                )
+                WordChangeButtons(
+                    onPrevious = {
+                        onPrevious()
+                        setShowEng(displayMode != DisplayMode.ONLY_MONGOLIAN)
+                        setShowMon(displayMode != DisplayMode.ONLY_ENGLISH)
+                    },
+                    onNext = {
+                        onNext()
+                        setShowEng(displayMode != DisplayMode.ONLY_MONGOLIAN)
+                        setShowMon(displayMode != DisplayMode.ONLY_ENGLISH)
+                    }
+                )
                 ActionButtons(
                     isWordAvailable = word != null,
                     onAddClick = onAddClick,
@@ -57,12 +78,12 @@ fun HomeScreen(
             onConfirm = {
                 showDeleteDialog = false
                 onDeleteClick()
+                onPrevious()
             },
             onCancel = { showDeleteDialog = false }
         )
     }
 }
-
 
 @Composable
 fun HomeHeader(onSettingsClick: () -> Unit) {
@@ -97,11 +118,12 @@ fun HomeHeader(onSettingsClick: () -> Unit) {
 fun WordCardGroup(
     word: Word?,
     displayMode: DisplayMode,
+    showEng: Boolean,
+    showMon: Boolean,
+    onToggleEng: () -> Unit,
+    onToggleMon: () -> Unit,
     onEditClick: () -> Unit
 ) {
-    var showMon by remember { mutableStateOf(displayMode == DisplayMode.FULL || displayMode == DisplayMode.ONLY_MONGOLIAN) }
-    var showEng by remember { mutableStateOf(displayMode == DisplayMode.FULL || displayMode == DisplayMode.ONLY_ENGLISH) }
-
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -110,21 +132,25 @@ fun WordCardGroup(
             label = stringResource(R.string.eng_word),
             text = if (showEng) word?.english.orEmpty() else "",
             onClick = {
-                if (!showEng) showEng = true
+                if (displayMode == DisplayMode.ONLY_MONGOLIAN) {
+                    onToggleEng()
+                }
             },
             onLongClick = onEditClick
         )
+
         WordCard(
             label = stringResource(R.string.mon_word),
             text = if (showMon) word?.mongolian.orEmpty() else "",
             onClick = {
-                if (!showMon) showMon = true
+                if (displayMode == DisplayMode.ONLY_ENGLISH) {
+                    onToggleMon()
+                }
             },
             onLongClick = onEditClick
         )
     }
 }
-
 
 @Composable
 fun WordCard(
@@ -160,7 +186,7 @@ fun WordCard(
 }
 
 @Composable
-fun NavigationButtons(
+fun WordChangeButtons(
     onPrevious: () -> Unit,
     onNext: () -> Unit
 ) {
